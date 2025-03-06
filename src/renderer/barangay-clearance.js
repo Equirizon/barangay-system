@@ -1,6 +1,7 @@
 const { ipcRenderer } = require("electron");
 
 const addRecordBtn = document.getElementById("addRecordBtn");
+const saveAndPrintBtn = document.getElementById("saveAndPrint");
 const modalOverlay = document.getElementById("modalOverlay");
 const addModal = document.getElementById("addModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -23,8 +24,9 @@ ipcRenderer.on("clearance-data", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord(${record.id}, '${record.lastName}', '${record.address}', '${record.purpose}')">Edit</button>
+                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -49,8 +51,9 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord(${record.id}, '${record.lastName}', '${record.address}', '${record.purpose}')">Edit</button>
+                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -58,13 +61,23 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
 });
 
 // Open Edit Modal
-function editRecord(id, lastName, address, purpose) {
+function editRecord(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber) {
     document.getElementById("update-id").value = id;
     document.getElementById("update-last-name").value = lastName;
+    document.getElementById("update-first-name").value = firstName;
+    document.getElementById("update-middle-name").value = middleName;
+    document.getElementById("update-civil-status").value = civilStatus;
+    document.getElementById("update-birthdate").value = birthdate;
+    document.getElementById("update-birthplace").value = birthplace;
     document.getElementById("update-address").value = address;
+    document.getElementById("update-findings").value = findings;
     document.getElementById("update-purpose").value = purpose;
+    document.getElementById("update-contact-number").value = contactNumber;
+    
+    // Show the modal
     document.getElementById("updateModal").style.display = "block";
 }
+
 
 // Close Edit Modal
 function closeUpdateModal() {
@@ -100,9 +113,7 @@ ipcRenderer.on("clearance-updated", () => {
 
 // Delete Record
 function deleteRecord(id) {
-    if (confirm("Are you sure you want to delete this record?")) {
-        ipcRenderer.send("delete-clearance", id);
-    }
+    ipcRenderer.send("delete-clearance", id);
 }
 
 ipcRenderer.on("clearance-deleted", () => {
@@ -116,17 +127,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const tableBody = document.getElementById("clearanceTableBody");
         tableBody.innerHTML = ""; // Clear existing table data
 
-        data.forEach(row => {
+        data.forEach(record => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${row.id}</td>
-                <td>${row.lastName}</td>
-                <td>${row.address}</td>
-                <td>${row.purpose}</td>
-                <td>${row.dateIssued}</td>
+                <td>${record.id}</td>
+                <td>${record.lastName}</td>
+                <td>${record.address}</td>
+                <td>${record.purpose}</td>
+                <td>${record.dateIssued}</td>
                 <td>
-                <button onclick="editRecord(${row.id}, '${row.lastName}', '${row.address}', '${row.purpose}')">Edit</button>
-                <button onclick="deleteRecord(${row.id})">Delete</button>
+                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
+                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 </td>
             `;
             tableBody.appendChild(tr);
@@ -147,7 +159,33 @@ closeModalBtn.addEventListener("click", () => {
 // Handle form submission
 form.addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent default form submission
+    addRecords();
+});
 
+saveAndPrintBtn.addEventListener("click", () => {
+    addRecords();
+    printBarangayCertificate(
+        document.getElementById("first-name").value,
+        document.getElementById("middle-name").value,
+        document.getElementById("last-name").value,
+        document.getElementById("civil-status").value,
+        document.getElementById("birthdate").value,
+        document.getElementById("birthplace").value,
+        document.getElementById("address").value, 
+        document.getElementById("findings").value,
+        document.getElementById("purpose").value
+    ); 
+});
+
+// Listen for success response
+ipcRenderer.on("barangay-clearance-added", () => {
+    addModal.style.display = "none";
+    modalOverlay.style.display = "none";
+    document.getElementById("createRecordForm").reset();
+    loadClearanceData();
+});
+
+function addRecords(){
     const recordData = {
         lastName: document.getElementById("last-name").value,
         firstName: document.getElementById("first-name").value,
@@ -162,13 +200,79 @@ form.addEventListener("submit", (event) => {
         contactNumber: document.getElementById("contact-number").value
     };
 
-    ipcRenderer.send("add-barangay-clearance", recordData); // Send data to main process
-});
+    ipcRenderer.send("add-barangay-clearance", recordData);
+}
 
-// Listen for success response
-ipcRenderer.on("barangay-clearance-added", () => {
-    addModal.style.display = "none";
-    modalOverlay.style.display = "none";
-    document.getElementById("createRecordForm").reset();
-    loadClearanceData();
-});
+function printBarangayCertificate(firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose) {
+    const certificateContent = `
+        <html>
+        <head>
+            <title>Barangay Clearance</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #000; }
+                h1, h3 { text-align: center; }
+                p { margin: 10px 0; }
+                .btn-container { text-align: center; margin-top: 20px; }
+                button {
+                    padding: 10px 15px;
+                    margin: 5px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+                .print-btn { background: green; color: white; }
+                .cancel-btn { background: red; color: white; }
+                .duplicate { display: none }
+                @media print {
+                    .no-print {
+                        display: none;
+                    }
+                    .print {
+                        display: block;
+                    }
+                }	
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Barangay Clearance</h1>
+                <h3>Republic of the Philippines</h3>
+                <h3>Barangay ChatGPT</h3>
+
+                <p><strong>Name:</strong> ${firstName} ${middleName} ${lastName}</p>
+                <p><strong>Civil Status:</strong> ${civilStatus}</p>
+                <p><strong>Birthdate:</strong> ${birthdate}</p>
+                <p><strong>Birthplace:</strong> ${birthplace}</p>
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Findings:</strong> ${findings}</p>
+                <p><strong>Purpose:</strong> ${purpose}</p>
+            </div>
+            <div class="container duplicate print">
+                <h1>Barangay Clearance</h1>
+                <h3>Republic of the Philippines</h3>
+                <h3>Barangay ChatGPT</h3>
+
+                <p><strong>Name:</strong> ${firstName} ${middleName} ${lastName}</p>
+                <p><strong>Civil Status:</strong> ${civilStatus}</p>
+                <p><strong>Birthdate:</strong> ${birthdate}</p>
+                <p><strong>Birthplace:</strong> ${birthplace}</p>
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Findings:</strong> ${findings}</p>
+                <p><strong>Purpose:</strong> ${purpose}</p>
+            </div>
+            <div class="btn-container">
+                <button class="print-btn no-print" onclick="window.print()">Print</button>
+                <button class="cancel-btn no-print" onclick="window.close()">Cancel</button>
+            </div>
+        </body>
+        </html>
+    `;
+
+    // Open a new window for the document
+    const docWindow = window.open("", "_blank");
+
+    // Write content into the new window
+    docWindow.document.write(`${certificateContent}`);
+    docWindow.document.close();
+}
