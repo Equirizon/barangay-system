@@ -1,12 +1,12 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('node:path');
-const db = require("./src/database/database");
+const db = require("./database/database");
 
 let mainWindow, loginWindow; // Global reference to the window
 
 app.whenReady().then(() => {
 	createMainWindow();
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 });
 
 const createLoginWindow = () => {
@@ -18,8 +18,8 @@ const createLoginWindow = () => {
 		contextIsolation: false,
 		},
 	});
-
-	loginWindow.loadFile(path.join(__dirname, "src", "views", "login.html"));
+	loginWindow.setMenu(null);
+	loginWindow.loadFile(path.join(__dirname, "login.html"));
 };
 
 const createMainWindow = () => {
@@ -32,27 +32,8 @@ const createMainWindow = () => {
 		preload: path.join(__dirname, 'preload.js')
 		}
 	});
-	mainWindow.loadFile(path.join(__dirname, "src", "views", "index.html"));
-
-  // Updated menu with "Services" instead of "Pages"
-	const menuTemplate = [
-		{ role: 'windowMenu' },
-		{ role: 'help' },
-		{
-		label: 'Services',
-		submenu: [
-			{ label: 'Barangay Certificate', click: () => loadPage('barangay-certificate.html') },
-			{ label: 'Barangay Clearance', click: () => loadPage('barangay_clearance/barangay-clearance.html') },
-			{ label: 'Barangay Permit', click: () => loadPage('barangay-permit.html') },
-			{ label: 'Barangay Business Permit', click: () => loadPage('barangay-business-permit.html') },
-			{ label: 'Certificate of Indigency', click: () => loadPage('certificate-of-indigency.html') },
-			{ label: 'Blotter Report', click: () => loadPage('blotter-report.html') }
-		]
-		}
-	];
-
-	const menu = Menu.buildFromTemplate(menuTemplate);
-	Menu.setApplicationMenu(menu);
+	mainWindow.setMenu(null);
+	mainWindow.loadFile(path.join(__dirname, "views", "index.html"));
 };
 
 function loadPage(page) {
@@ -150,6 +131,4 @@ ipcMain.on("delete-clearance", (event, id) => {
 });
 
 
-
-// Function to load the selected page
 

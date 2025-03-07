@@ -4,13 +4,16 @@ const addRecordBtn = document.getElementById("addRecordBtn");
 const saveAndPrintBtn = document.getElementById("saveAndPrint");
 const modalOverlay = document.getElementById("modalOverlay");
 const addModal = document.getElementById("addModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
+
 const form = document.getElementById("createRecordForm");
 
-// Function to request clearance data from main process
 function loadClearanceData() {
     ipcRenderer.send("fetch-clearance-data");
 }
+
+ipcRenderer.on("clearance-updated", () => {
+    loadClearanceData();
+});
 
 ipcRenderer.on("clearance-data", (event, data) => {
     const tbody = document.getElementById("clearanceTableBody");
@@ -24,20 +27,14 @@ ipcRenderer.on("clearance-data", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="editRecord('update', ${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(row);
     });
 });
-
-// Search functionality
-function searchClearance() {
-    const query = document.getElementById("searchInput").value.trim();
-    ipcRenderer.send("search-clearance-data", query);
-}
 
 ipcRenderer.on("search-clearance-results", (event, data) => {
     const tbody = document.getElementById("clearanceTableBody");
@@ -51,77 +48,16 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">View</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(row);
     });
 });
 
-// Open Edit Modal
-function editRecord(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber) {
-    document.getElementById("update-id").value = id;
-    document.getElementById("update-last-name").value = lastName;
-    document.getElementById("update-first-name").value = firstName;
-    document.getElementById("update-middle-name").value = middleName;
-    document.getElementById("update-civil-status").value = civilStatus;
-    document.getElementById("update-birthdate").value = birthdate;
-    document.getElementById("update-birthplace").value = birthplace;
-    document.getElementById("update-address").value = address;
-    document.getElementById("update-findings").value = findings;
-    document.getElementById("update-purpose").value = purpose;
-    document.getElementById("update-contact-number").value = contactNumber;
-    
-    // Show the modal
-    document.getElementById("updateModal").style.display = "block";
-}
-
-
-// Close Edit Modal
-function closeUpdateModal() {
-    document.getElementById("updateModal").style.display = "none";
-    modalOverlay.style.display = "none";
-
-}
-
-// Update Record
-document.getElementById("updateRecordForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const updatedData = {
-        id: document.getElementById("update-id").value,
-        lastName: document.getElementById("update-last-name").value,
-        firstName: document.getElementById("update-first-name").value,
-        middleName: document.getElementById("update-middle-name").value,
-        address: document.getElementById("update-address").value,
-        birthdate: document.getElementById("update-birthdate").value,
-        birthplace: document.getElementById("update-birthplace").value,
-        purpose: document.getElementById("update-purpose").value,
-        findings: document.getElementById("update-findings").value,
-        civilStatus: document.getElementById("update-civil-status").value,
-        contactNumber: document.getElementById("update-contact-number").value,
-        gender: document.getElementById("update-gender").value
-    };
-    ipcRenderer.send("update-clearance", updatedData);
-    closeUpdateModal();
-});
-
-ipcRenderer.on("clearance-updated", () => {
-    loadClearanceData();
-});
-
-// Delete Record
-function deleteRecord(id) {
-    ipcRenderer.send("delete-clearance", id);
-}
-
-ipcRenderer.on("clearance-deleted", () => {
-    loadClearanceData();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
-
     ipcRenderer.send("fetch-clearance-data");
     ipcRenderer.on("clearance-data", (event, data) => {
         const tableBody = document.getElementById("clearanceTableBody");
@@ -136,30 +72,131 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${record.purpose}</td>
                 <td>${record.dateIssued}</td>
                 <td>
-                <button onclick="editRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button onclick="deleteRecord(${record.id})">Delete</button>
                 </td>
             `;
             tableBody.appendChild(tr);
         });
     });
 });
-addRecordBtn.addEventListener("click", () => {
-    modalOverlay.style.display = "block";
-    addModal.style.display = "block";
-});
 
-// Close modal when "Cancel" button is clicked
-closeModalBtn.addEventListener("click", () => {
+// Search functionality
+function searchClearance() {
+    const query = document.getElementById("searchInput").value.trim();
+    ipcRenderer.send("search-clearance-data", query);
+}
+
+function assignInputValue(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber) {
+    const values = {
+        "manage-id": id,
+        "manage-last-name": lastName,
+        "manage-first-name": firstName,
+        "manage-middle-name": middleName,
+        "manage-civil-status": civilStatus,
+        "manage-birthdate": birthdate,
+        "manage-birthplace": birthplace,
+        "manage-address": address,
+        "manage-findings": findings,
+        "manage-purpose": purpose,
+        "manage-contact-number": contactNumber
+    };
+
+    Object.keys(values).forEach(field => {
+        const element = document.getElementById(field);
+        if (element) {
+            element.value = values[field];
+        }
+    });
+}
+
+function removeInputValue() {
+    const fields = [
+        "id", "last-name", "first-name", "middle-name",
+        "civil-status", "birthdate", "birthplace", 
+        "address", "findings", "purpose", "contact-number"
+    ];
+    
+    fields.forEach(field => {
+        const element = document.getElementById(field);
+        if (element) {
+            element.value = "";
+        }
+    });
+}
+
+function removeManageInputValue() {
+    const fields = [
+        "manage-id", "manage-last-name", "manage-first-name", "manage-middle-name",
+        "manage-civil-status", "manage-birthdate", "manage-birthplace", 
+        "manage-address", "manage-findings", "manage-purpose", "manage-contact-number"
+    ];
+    
+    fields.forEach(field => {
+        const element = document.getElementById(field);
+        if (element) {
+            element.value = "";
+        }
+    });
+}
+
+function closeModal(id) {
+    document.getElementById(id).style.display = "none";
     modalOverlay.style.display = "none";
-    addModal.style.display = "none";
+    id === "addModal" ? removeInputValue() : removeManageInputValue();
+}
+
+function openModal(id) {
+    document.getElementById(id).style.display = "block";
+    modalOverlay.style.display = "block";
+}
+
+function manageRecord(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber){
+    assignInputValue(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber)
+    setTimeout(() => {
+        openModal("manageModal");
+    }, 50);
+}
+
+function getFormData(prefix) {
+    const fields = [
+        "id", "last-name", "first-name", "middle-name",
+        "address", "birthdate", "birthplace",
+        "purpose", "findings", "civil-status",
+        "contact-number", "gender"
+    ];
+    
+    const data = {};
+    fields.forEach(field => {
+        const element = document.getElementById(`${prefix}${field}`);
+        if (element) {
+            data[field.replace(/-([a-z])/g, (_, c) => c.toUpperCase())] = element.value;
+        }
+    });
+    
+    return data;
+}
+
+document.getElementById("updateRecordForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    ipcRenderer.send("update-clearance", getFormData("manage-"));
+    closeModal("manageModal");
 });
 
-// Handle form submission
-form.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent default form submission
-    addRecords();
+document.getElementById("createRecordForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    ipcRenderer.send("add-barangay-clearance", getFormData(""));
+    closeModal("addModal");
+});
+
+
+function deleteRecord(id) {
+    ipcRenderer.send("delete-clearance", id);
+}
+
+ipcRenderer.on("clearance-deleted", () => {
+    loadClearanceData();
 });
 
 saveAndPrintBtn.addEventListener("click", () => {
@@ -184,24 +221,6 @@ ipcRenderer.on("barangay-clearance-added", () => {
     document.getElementById("createRecordForm").reset();
     loadClearanceData();
 });
-
-function addRecords(){
-    const recordData = {
-        lastName: document.getElementById("last-name").value,
-        firstName: document.getElementById("first-name").value,
-        middleName: document.getElementById("middle-name").value,
-        address: document.getElementById("address").value,
-        birthdate: document.getElementById("birthdate").value,
-        birthplace: document.getElementById("birthplace").value,
-        purpose: document.getElementById("purpose").value,
-        findings: document.getElementById("findings").value,
-        civilStatus: document.getElementById("civil-status").value,
-        gender: document.getElementById("gender").value,
-        contactNumber: document.getElementById("contact-number").value
-    };
-
-    ipcRenderer.send("add-barangay-clearance", recordData);
-}
 
 function printBarangayCertificate(firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose) {
     const certificateContent = `
