@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Barangay ChatGPT</title>
+    <link rel="stylesheet" href="../css/form.css">
+</head>
+<body>
+    <div id="testModal">
+        <div>
+            <div>
+                <div>
+                    <div><label>Resident Certificate No.</label><input type="text" class="third-width"></div>
+                    <div><label>Document Date</label> <input type="text" class="third-width"></div>
+                    <div><label>OR Date</label> <input type="text" class="third-width"></div>
+                    <div><label>Document Number</label> <input type="text" class="third-width"></div>
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <label>Right Finger 1:</label>
+                            <div>
+                                <div class="image-box"></div>
+                                <button class="biometrics-finger-btn">SCAN</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Left Finger 2:</label>
+                            <div>
+                                <div class="image-box"></div>
+                                <button class="biometrics-finger-btn">SCAN</button>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <label>Face 3:</label>
+                            <div>
+                                <div class="image-box face"></div>
+                                <button class="biometrics-face-btn">SUBMIT</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div>
+                <div>
+                    <input type="text" class="full-name" >
+                </div>
+                <div>
+                    <div>
+                        <label>Last Name:</label>
+                        <input type="text" id="manage-last-name" placeholder="Last Name">
+                    </div>
+                    <div>
+                        <label>First Name:</label>
+                        <input type="text" id="manage-first-name" placeholder="First Name">
+                    </div>
+                    <div>
+                        <label>Middle Name:</label>
+                        <input type="text" id="manage-middle-name" placeholder="Middle Name">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Date of Birth</label>
+                        <input type="text" id="manage-birthdate">
+                    </div>
+                    <div>
+                        <label>Age</label>
+                        <input type="text" style="width: 92px;">
+                    </div>
+                    <div>
+                        <label>Place of Birth</label>
+                        <input type="text" id="manage-birthplace" style="width: 328px;">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Address</label>
+                        <input type="text" id="manage-address" style="width: 668px;">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Civil Status:</label>
+                        <select name="" id=""></select>
+                    </div>
+                    <div>
+                        <label>Gender:</label>
+                        <select name="" id="gender"></select>
+                    </div>
+                    <div>
+                        <label>Purpose</label>
+                        <select name="" id="purpose"></select>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Cedula Number:</label>
+                        <input type="text">
+                    </div>
+                    <div>
+                        <label>Place Issued:</label>
+                        <input type="text" name="" id="">
+                    </div>
+                    <div>
+                        <label>Date Issued:</label>
+                        <input type="text" class="third-width">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>TIN Number:</label>
+                        <input type="text">  
+                    </div>
+                    <div>
+                        <label>OR Number:</label>
+                        <input type="text" name="" id="">
+                    </div>
+                    <div>
+                        <label>Contact Number:</label>
+                        <input type="text" id="manage-contact-number" class="third-width required">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label>Findings:</label>
+                        <input type="text" style="width: 438px;">
+                    </div>
+                    <div>
+                        <button style="width: 210px; background: #0075FF;">PRINT OTHER CASE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button style="background: #0075FF;">UPDATE</button>
+            <button style="background: #716FE7;">PRINT</button>
+            <button style="background: #F9413A;">DELETE</button>
+            <button style="background: #716FE7;">CANCEL</button>
+        </div> 
+    </div>
+    
+    <script src="../renderer/sidebar.js" defer></script>
+</body>
+</html>

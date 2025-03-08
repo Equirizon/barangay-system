@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barangay Clearance</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/form.css">
 </head>
 <body>
     <div class="main-container">
@@ -14,106 +14,311 @@
             <button onclick="openModal('addModal')">Add New Record</button>
             <input type="text" id="searchInput" placeholder="Search by Last Name">
             <button onclick="searchClearance()">Search</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Last Name</th>
-                        <th>Address</th>
-                        <th>Purpose</th>
-                        <th>Issued Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="clearanceTableBody">
-                    <!-- Data will be inserted here -->
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Last Name</th>
+                            <th>Address</th>
+                            <th>Purpose</th>
+                            <th>Issued Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clearanceTableBody">
+
+                    </tbody>
+                </table>
+            </div>
             <div id="modalOverlay"></div>
             <div id="addModal">
-                <h2>Add New Barangay Clearance</h2>
-                <form id="createRecordForm">
-                    <div class="form-container">
-                        <div class="grid-container">
-            
-                            <label>Resident Certificate No.</label> <input type="text" class="third-width">
-                            <label>Document Date</label> <input type="text" class="third-width">
-                            <label>OR Date</label> <input type="text" class="third-width">
-                            <label>Document Number</label> <input type="text" class="third-width">
-                            
-                            <div class="image-box">Left Thumb</div>
-                            <div class="image-box">Right Thumb</div>
-                            <div class="image-box half-width">Face</div>
-                            
-                            <input type="text" class="half-width required" id="last-name" placeholder="Last Name">
-                            <input type="text" class="half-width required" id="first-name" placeholder="First Name">
-                            <input type="text" class="full-width required" id="middle-name" style="width: 45%;" placeholder="Middle Name">
-                            <label>Address</label> <input type="text" id="address" class="full-width required">
-                            <label>Date of Birth</label> <input type="text" id="birthdate" class="third-width required">
-                            <label>Place of Birth</label> <input type="text" id="birthplace" class="third-width required">
-                            
-                            <label>Purpose</label> <input type="text" id="purpose" class="third-width required">
-                            <label>Findings</label> <input type="text" id="findings" class="third-width required">
-                            
-                            
-                            
-                            <label>Civil Status</label> <input type="text" id="civil-status" class="third-width required">
-                            <label>Contact No.</label> <input type="text" id="contact-number" class="third-width required">
-                            <label>Gender</label> <input type="text" id="gender" class="third-width required">
-                            
-                            <label>Cedula Number</label> <input type="text" class="third-width">
-                            <label>OR Number</label> <input type="text" class="third-width">
-                            <label>Date Issued</label> <input type="text" class="third-width">
-                            <label>Place Issued</label> <input type="text" class="third-width">
-                            <label>TIN Number</label> <input type="text" class="third-width">
-                            
-                            <button type="button" id="saveAndPrint">Save and Print</button>
-                            <button type="submit">Save</button>
-                            <button type="button" onclick="closeModal('addModal')">Cancel</button>
+                <div class="modal">
+                    <div>
+                        <div>
+                            <div>
+                                <div><label>Resident Certificate No.</label><input type="text" class="third-width"></div>
+                                <div><label>Document Date</label> <input type="text" class="third-width"></div>
+                                <div><label>OR Date</label> <input type="text" class="third-width"></div>
+                                <div><label>Document Number</label> <input type="text" class="third-width"></div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div>
+                                        <label>Right Finger 1:</label>
+                                        <div>
+                                            <div class="image-box"></div>
+                                            <button class="biometrics-finger-btn">SCAN</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Left Finger 2:</label>
+                                        <div>
+                                            <div class="image-box"></div>
+                                            <button class="biometrics-finger-btn">SCAN</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div>
+                                        <label>Face 3:</label>
+                                        <div>
+                                            <div class="image-box face"></div>
+                                            <button class="biometrics-face-btn">SUBMIT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="text" class="full-name" >
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Last Name:</label>
+                                    <input type="text" id="last-name" placeholder="Last Name">
+                                </div>
+                                <div>
+                                    <label>First Name:</label>
+                                    <input type="text" id="first-name" placeholder="First Name">
+                                </div>
+                                <div>
+                                    <label>Middle Name:</label>
+                                    <input type="text" id="middle-name" placeholder="Middle Name">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Date of Birth</label>
+                                    <input type="text" id="birthdate">
+                                </div>
+                                <div>
+                                    <label>Age</label>
+                                    <input type="text" style="width: 92px;">
+                                </div>
+                                <div>
+                                    <label>Place of Birth</label>
+                                    <input type="text" id="birthplace" style="width: 328px;">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Address</label>
+                                    <input type="text" id="address" style="width: 668px;">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Civil Status:</label>
+                                    <select name="" id=""></select>
+                                </div>
+                                <div>
+                                    <label>Gender:</label>
+                                    <select name="" id="gender"></select>
+                                </div>
+                                <div>
+                                    <label>Purpose</label>
+                                    <select id="purpose">
+                                        <option value="Local Employment">Apple</option>
+                                        <option value="Travel Abroad">Banana</option>
+                                        <option value="L.T.O Requirement">Cherry</option>
+                                        <option value="Change of Name">Cherry</option>
+                                        <option value="NAPOLCOM Requirement">Cherry</option>
+                                        <option value="PNP Requirement">Cherry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Cedula Number:</label>
+                                    <input type="text">
+                                </div>
+                                <div>
+                                    <label>Place Issued:</label>
+                                    <input type="text" name="" id="">
+                                </div>
+                                <div>
+                                    <label>Date Issued:</label>
+                                    <input type="text" class="third-width">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>TIN Number:</label>
+                                    <input type="text">  
+                                </div>
+                                <div>
+                                    <label>OR Number:</label>
+                                    <input type="text" name="" id="">
+                                </div>
+                                <div>
+                                    <label>Contact Number:</label>
+                                    <input type="text" id="contact-number" class="third-width required">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Findings:</label>
+                                    <input type="text" style="width: 438px;">
+                                </div>
+                                <div>
+                                    <button style="width: 210px; background: #0075FF;">PRINT OTHER CASE</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div>
+                        <button id="createRecordBtn" style="background: #0075FF;">SAVE</button>
+                        <button id="saveAndPrint" style="background: #716FE7;">SAVE AND PRINT</button>
+                        <button type="button" onclick="closeModal('addModal')" style="background: #716FE7;">CANCEL</button>
+                    </div> 
+                </div>
             </div>
             <div id="manageModal">
-                <h2>Manage Record</h2>
-                <form id="updateRecordForm">
-                    <div class="form-container">
-                        <div class="grid-container">
-                            <input type="hidden" id="manage-id">
-                            <label>Resident Certificate No.</label> <input type="text" class="third-width">
-                            <label>Document Date</label> <input type="text" class="third-width">
-                            <label>OR Date</label> <input type="text" class="third-width">
-                            <label>Document Number</label> <input type="text" class="third-width">
-                            
-                            <div class="image-box">Left Thumb</div>
-                            <div class="image-box">Right Thumb</div>
-                            <div class="image-box half-width">Face</div>
-                            
-                            <input type="text" class="half-width required" id="manage-last-name" placeholder="Last Name">
-                            <input type="text" class="half-width required" id="manage-first-name" placeholder="First Name">
-                            <input type="text" class="full-width required" id="manage-middle-name" style="width: 45%;" placeholder="Middle Name">
-                            <label>Address</label> <input type="text" id="manage-address" class="full-width required">
-                            <label>Date of Birth</label> <input type="text" id="manage-birthdate" class="third-width required">
-                            <label>Place of Birth</label> <input type="text" id="manage-birthplace" class="third-width required">
-                            
-                            <label>Purpose</label> <input type="text" id="manage-purpose" class="third-width required">
-                            <label>Findings</label> <input type="text" id="manage-findings" class="third-width required">
-
-                            <label>Civil Status</label> <input type="text" id="manage-civil-status" class="third-width required">
-                            <label>Contact No.</label> <input type="text" id="manage-contact-number" class="third-width required">
-                            <label>Gender</label> <input type="text" id="manage-gender" class="third-width required">
-                            
-                            <label>Cedula Number</label> <input type="text" class="third-width">
-                            <label>OR Number</label> <input type="text" class="third-width">
-                            <label>Date Issued</label> <input type="text" class="third-width">
-                            <label>Place Issued</label> <input type="text" class="third-width">
-                            <label>TIN Number</label> <input type="text" class="third-width">
+                <input id="manage-id" hidden>
+                <div class="modal">
+                    <div>
+                        <div>
+                            <div>
+                                <div><label>Resident Certificate No.</label><input type="text" class="third-width"></div>
+                                <div><label>Document Date</label> <input type="text" class="third-width"></div>
+                                <div><label>OR Date</label> <input type="text" class="third-width"></div>
+                                <div><label>Document Number</label> <input type="text" class="third-width"></div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div>
+                                        <label>Right Finger 1:</label>
+                                        <div>
+                                            <div class="image-box"></div>
+                                            <button class="biometrics-finger-btn">SCAN</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Left Finger 2:</label>
+                                        <div>
+                                            <div class="image-box"></div>
+                                            <button class="biometrics-finger-btn">SCAN</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div>
+                                        <label>Face 3:</label>
+                                        <div>
+                                            <div class="image-box face"></div>
+                                            <button class="biometrics-face-btn">SUBMIT</button>
+                                        </div>
+                                    </div>
+                                </div>
                                 
-                            <button type="submit">Update</button>
-                            <button type="button" onclick="closeModal('manageModal')">Cancel</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="text" class="full-name" >
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Last Name:</label>
+                                    <input type="text" id="manage-last-name" placeholder="Last Name">
+                                </div>
+                                <div>
+                                    <label>First Name:</label>
+                                    <input type="text" id="manage-first-name" placeholder="First Name">
+                                </div>
+                                <div>
+                                    <label>Middle Name:</label>
+                                    <input type="text" id="manage-middle-name" placeholder="Middle Name">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Date of Birth</label>
+                                    <input type="text" id="manage-birthdate">
+                                </div>
+                                <div>
+                                    <label>Age</label>
+                                    <input type="text" style="width: 92px;">
+                                </div>
+                                <div>
+                                    <label>Place of Birth</label>
+                                    <input type="text" id="manage-birthplace" style="width: 328px;">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Address</label>
+                                    <input type="text" id="manage-address" style="width: 668px;">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Civil Status:</label>
+                                    <select name="" id=""></select>
+                                </div>
+                                <div>
+                                    <label>Gender:</label>
+                                    <select id="manage-gender"></select>
+                                </div>
+                                <div>
+                                    <label>Purpose</label>
+                                    <select id="manage-purpose">
+                                        <option value="Local Employment">Apple</option>
+                                        <option value="Travel Abroad">Banana</option>
+                                        <option value="L.T.O Requirement">Cherry</option>
+                                        <option value="Change of Name">Cherry</option>
+                                        <option value="NAPOLCOM Requirement">Cherry</option>
+                                        <option value="PNP Requirement">Cherry</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Cedula Number:</label>
+                                    <input type="text">
+                                </div>
+                                <div>
+                                    <label>Place Issued:</label>
+                                    <input type="text" name="" id="">
+                                </div>
+                                <div>
+                                    <label>Date Issued:</label>
+                                    <input type="text" class="third-width">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>TIN Number:</label>
+                                    <input type="text">  
+                                </div>
+                                <div>
+                                    <label>OR Number:</label>
+                                    <input type="text" name="" id="">
+                                </div>
+                                <div>
+                                    <label>Contact Number:</label>
+                                    <input type="text" id="manage-contact-number" class="third-width required">
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label>Findings:</label>
+                                    <input type="text" style="width: 438px;">
+                                </div>
+                                <div>
+                                    <button style="width: 210px; background: #0075FF;">PRINT OTHER CASE</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div>
+                        <button id="updateRecordBtn" style="background: #0075FF;">UPDATE</button>
+                        <button style="background: #716FE7;">PRINT</button>
+                        <button style="background: #F9413A;">DELETE</button>
+                        <button onclick="closeModal('manageModal')" style="background: #716FE7;">CANCEL</button>
+                    </div> 
+                </div>
             </div>
         </div>
     </div>

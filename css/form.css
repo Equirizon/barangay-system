@@ -1,0 +1,257 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.main-container {
+    display: flex;
+    height: 100vh; /* Full height of the screen */
+}
+
+#sidebar-container{
+    width: 174px;
+}
+#sidebar {
+     /* 1/6 of the screen */
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(111.84deg, rgba(6, 11, 38, 0.94) 59.3%, rgba(26, 31, 55, 0) 100%);
+    color: white;
+    padding: 20px;
+    width: 174px;
+    border-radius: 12px;
+    margin: 10px;
+}
+
+#sidebar h2{
+    font-size: 11px;
+    color: linear-gradient(97.89deg, #FFFFFF 70.67%, rgba(117, 122, 140, 0) 108.55%);
+    font-weight: 200;
+    letter-spacing: 2px;
+    text-align: center;
+    padding-bottom: 12px;
+}
+
+#sidebar hr{
+    border: 1px solid;
+    border-image-source: linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);
+    border-image-slice: 1;
+
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    margin: 15px 0;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 50px;
+    padding: 20px;
+}
+
+.table-container {
+    width: 100%;
+    margin-top: 20px;
+    background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
+    padding: 50px;
+    border-radius: 12px;
+    height: 400px;
+}
+table {
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    color: #A0AEC0;
+    font-size: 12px;
+    padding-right: 50px;
+}
+th {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+.modal label{
+    font-weight: 200;
+    font-size: 10px;
+    color: #ffffff;
+    text-indent: 5px;
+}
+
+.modal .image-box{
+    width: 95px;
+    height: 111px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    background: linear-gradient(123.64deg, rgba(255, 255, 255, 0) -22.38%, rgba(255, 255, 255, 0.039) 70.38%);
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Creates space for the border */
+}
+
+body{
+    box-sizing: border-box;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background-image: url('../assets/wp9649930.jpg');
+    background-repeat: no-repeat;
+}
+
+#addModal, #manageModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    background-image: url('../assets/wp9649930.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.modal input, .modal select{
+    all: unset;
+    font-size: 10px;
+    text-indent: 12px;
+    color: #ffffff;
+    background: linear-gradient(123.64deg, rgba(255, 255, 255, 0) -22.38%, rgba(255, 255, 255, 0.039) 70.38%);
+    border: 2px solid;
+    border-radius: 12px;
+    border-color: #ffffff;
+    height: 30px;
+    width: 210px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Creates space for the border */
+}
+
+.modal input:focus, .modal select:focus {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.modal button{
+    font-size: 8px;
+    font-weight: 500;
+    color: #ffffff;
+    height: 27px;
+    border-radius: 7px;
+    border: none;
+    backdrop-filter: blur(120px);
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
+    padding: 30px 40px;
+    gap: 20px;
+    border-radius: 20px;
+    width: 670px;
+}
+
+.modal div {
+    display: flex;
+}
+
+.modal > div {
+    gap: 10px;
+    flex-direction: column;
+}
+
+.modal > div:first-child > div {
+    gap: 7px;
+    flex-direction: column;
+}
+
+.modal > div:first-child > div:first-child {
+    gap: 40px;
+}
+
+.modal > div:first-child div:first-child div:first-child input {
+    width: 210px;
+}
+
+.modal > div:last-child {
+    flex-direction: row;
+    justify-content: end;
+}
+
+.modal > div:last-child button {
+    width: 122px;
+}
+
+.modal > div:first-child > div:first-child{
+    flex-direction: row;
+}
+.modal > div:first-child > div:first-child > div {
+    flex-direction: column;
+}
+
+.modal > div:first-child > div:first-child > div:first-child div {
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 10px;
+}
+
+
+.modal > div:first-child > div:first-child > div:last-child > div:first-child {
+    gap: 13px;
+    text-indent: 5px;
+}
+
+.modal > div:first-child > div:first-child > div:last-child > div:first-child div{
+    flex-direction: column;
+    gap: 3px;
+}
+.modal > div:first-child > div:first-child > div:last-child > div:first-child div div{
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    
+}
+
+.modal .face{
+    width: 149px;
+    height: 153px;
+}
+
+.modal .biometrics-finger-btn{
+    width: 93px;
+    background: #0075FF38;
+}
+
+.modal .biometrics-face-btn{
+    width: 27px;
+    width: 93px;
+    background: #0075FF;
+}
+
+.modal > div:first-child > div:last-child > div:nth-child(5) > div {
+    flex-direction: column;
+}
+
+.modal .full-name {
+    width: 668px;
+    height: 50px;
+}
+
+.modal > div:first-child > div:last-child > div {
+    gap: 16px;
+}
+
+.modal > div:first-child > div:last-child > div div {
+    flex-direction: column;
+    gap: 3px;
+    justify-content: end;                        
+}
+
+
+

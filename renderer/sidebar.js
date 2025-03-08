@@ -1,10 +1,12 @@
 function createSidebar() {
     const sidebarHTML = `
         <div id="sidebar">
-            <h2>Barangay System</h2>
+            <h2>BRGYHUB</h2>
+            <hr>
             <ul>
                 <li><a href="index.html">Dashboard</a></li>
                 <li><a href="barangay-clearance.html">Barangay Clearance</a></li>
+                <li><a href="warrant-booking.html">Warrant Booking</a></li>
             </ul>
         </div>
     `;

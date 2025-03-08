@@ -27,7 +27,7 @@ ipcRenderer.on("clearance-data", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord('update', ${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Edit</button>
+                <button onclick="editRecord('update', ${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
@@ -48,7 +48,7 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">View</button>
+                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
@@ -178,13 +178,13 @@ function getFormData(prefix) {
     return data;
 }
 
-document.getElementById("updateRecordForm").addEventListener("submit", (e) => {
+document.getElementById("updateRecordBtn").addEventListener("click", (e) => {
     e.preventDefault();
     ipcRenderer.send("update-clearance", getFormData("manage-"));
     closeModal("manageModal");
 });
 
-document.getElementById("createRecordForm").addEventListener("submit", (e) => {
+document.getElementById("createRecordBtn").addEventListener("click", (e) => {
     e.preventDefault();
     ipcRenderer.send("add-barangay-clearance", getFormData(""));
     closeModal("addModal");
