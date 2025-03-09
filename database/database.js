@@ -14,18 +14,27 @@ db.run(
 db.run(
   `CREATE TABLE IF NOT EXISTS barangay_clearance (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    barangayClearanceNumber TEXT,
+    documentDate TEXT,
+    orDate TEXT,
+    documentNumber TEXT,
+    orNumber TEXT,
     lastName TEXT,
     firstName TEXT,
     middleName TEXT,
     address TEXT,
     birthdate TEXT,
     birthplace TEXT,
-    purpose TEXT,
-    findings TEXT,
     civilStatus TEXT,
     gender TEXT,
     contactNumber TEXT,
+    purpose TEXT,
+    findings TEXT,
+    cedulaNumber TEXT,
+    placeIssued TEXT,
     dateIssued DATE DEFAULT (DATE('now')),
+    tinNumber TEXT,
+    faceFileName TEXT,
     createdTimestamp DATETIME DEFAULT (DATETIME('now'))
   )`,
   function (err) {
@@ -56,8 +65,19 @@ db.run(
 
       if (row.count === 0) {
         db.run(
-          `INSERT INTO barangay_clearance (lastName, firstName, middleName, address, birthdate, birthplace, purpose, findings, civilStatus, gender, contactNumber)
-          VALUES ('Dela Cruz', 'Juan', 'Santos', '123 Main St', '2000-01-01', 'Manila', 'Employment', 'No record', 'Single', 'Male', '0909')`,
+          `INSERT INTO barangay_clearance (
+            barangayClearanceNumber, documentDate, orDate, documentNumber, orNumber,
+            lastName, firstName, middleName, address, birthdate, birthplace, civilStatus, gender, contactNumber,
+            purpose, findings,
+            cedulaNumber, placeIssued, dateIssued, tinNumber,
+            faceFileName, createdTimestamp
+          ) VALUES (
+            'BCN-2025001', '2025-03-09', '2025-03-09', 'DOC-001', 'OR-001',
+            'Dela Cruz', 'Juan', 'Santos', '123 Main St', '2000-01-01', 'Manila', 'Single', 'Male', '09091234567',
+            'Employment', 'No record',
+            'CED-2025', 'Manila', DATE('now'), 'TIN-123456789',
+            'juan-dela-cruz.jpg', DATETIME('now')
+          )` ,
           function (err) {
             if (err) {
               console.error("Error inserting data:", err.message);

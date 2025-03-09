@@ -1,7 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('node:path');
 require("./ipcHandlers");
-const fs = require('fs');
 
 let mainWindow, loginWindow; // Global reference to the window
 
@@ -24,9 +23,10 @@ const createLoginWindow = () => {
 };
 
 const createMainWindow = () => {
+	const { width, height } = require("electron").screen.getPrimaryDisplay().workAreaSize;
 	mainWindow = new BrowserWindow({
-		width: 1200,
-		height: 800,
+		width: width,
+		height: height,
 		show: false,
 		webPreferences: {
 		nodeIntegration: true,
@@ -35,7 +35,7 @@ const createMainWindow = () => {
 		}
 	});
 	mainWindow.setMenu(null);
-	mainWindow.loadFile(path.join(__dirname, "views", "camera.html"));
+	mainWindow.loadFile(path.join(__dirname, "views", "barangay-clearance.html"));
 	mainWindow.once("ready-to-show", () => {
         mainWindow.show(); // Show the window only when it's ready
     });
@@ -47,25 +47,6 @@ function loadPage(page) {
 	}
 }
 
-ipcMain.on('save-image', (event, imageData) => {
-    const base64Data = imageData.replace(/^data:image\/png;base64,/, '');
-	const saveDirectory = path.join(__dirname, 'assets');
-    
-    // Ensure the directory exists
-    if (!fs.existsSync(saveDirectory)) {
-        fs.mkdirSync(saveDirectory);
-    }
-
-    const filePath = path.join(saveDirectory, `captured_image_${Date.now()}.png`);
-
-    fs.writeFile(filePath, base64Data, 'base64', (err) => {
-        if (err) {
-            event.reply('save-image-response', 'Failed to save image.');
-        } else {
-            event.reply('save-image-response', `Image saved at ${filePath}`);
-        }
-    });
-});
 
 
 

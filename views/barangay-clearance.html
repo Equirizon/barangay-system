@@ -9,12 +9,11 @@
 <body>
     <div class="main-container">
         <div id="sidebar-container"></div>
-        <div class="content">
-            <h2>Barangay Clearance Records</h2>
-            <button onclick="openModal('addModal')">Add New Record</button>
-            <input type="text" id="searchInput" placeholder="Search by Last Name">
-            <button onclick="searchClearance()">Search</button>
-            <div class="table-container">
+        <div class="content"> 
+            <div class="table-container"><h2>Barangay Clearance Data Entry</h2>
+                <button id="addRecordBtn">Add New Record</button>
+                <input type="text" id="searchInput" placeholder="Search by Last Name">
+                <button onclick="searchClearance()">Search</button>
                 <table>
                     <thead>
                         <tr>
@@ -37,10 +36,10 @@
                     <div>
                         <div>
                             <div>
-                                <div><label>Resident Certificate No.</label><input type="text" class="third-width"></div>
-                                <div><label>Document Date</label> <input type="text" class="third-width"></div>
-                                <div><label>OR Date</label> <input type="text" class="third-width"></div>
-                                <div><label>Document Number</label> <input type="text" class="third-width"></div>
+                                <div><label>Barangay Clearance No.</label><input type="text" id="barangay-clearance-number"></div>
+                                <div><label>Document Date</label> <input type="text" id="document-date"></div>
+                                <div><label>OR Date</label> <input type="text" id="or-date"></div>
+                                <div><label>Document Number</label> <input type="text" id="document-number"></div>
                             </div>
                             <div>
                                 <div>
@@ -62,8 +61,9 @@
                                     <div>
                                         <label>Face 3:</label>
                                         <div>
-                                            <div class="image-box face"></div>
-                                            <button class="biometrics-face-btn">SUBMIT</button>
+                                            <input id="face-file-name" value="placeholder.jpg" style="display: none;">
+                                            <div class="image-box face"><canvas id="add-canvas"></canvas></div>
+                                            <button onclick="openPhotoModal()" class="biometrics-face-btn">SUBMIT</button>
                                         </div>
                                     </div>
                                 </div>
@@ -72,7 +72,7 @@
                         </div>
                         <div>
                             <div>
-                                <input type="text" class="full-name" >
+                                <input type="text" class="full-name">
                             </div>
                             <div>
                                 <div>
@@ -111,56 +111,63 @@
                             <div>
                                 <div>
                                     <label>Civil Status:</label>
-                                    <select name="" id=""></select>
+                                    <select id="civil-status">
+                                        <option value="single">Single</option>
+                                        <option value="married">Married</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label>Gender:</label>
-                                    <select name="" id="gender"></select>
+                                    <select id="gender">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label>Purpose</label>
                                     <select id="purpose">
-                                        <option value="Local Employment">Apple</option>
-                                        <option value="Travel Abroad">Banana</option>
-                                        <option value="L.T.O Requirement">Cherry</option>
-                                        <option value="Change of Name">Cherry</option>
-                                        <option value="NAPOLCOM Requirement">Cherry</option>
-                                        <option value="PNP Requirement">Cherry</option>
+                                        <option value="Local Employment">Local Employmen</option>
+                                        <option value="Travel Abroad">Travel Abroad</option>
+                                        <option value="L.T.O Requirement">L.T.O Requirement</option>
+                                        <option value="Change of Name">Change of Name</option>
+                                        <option value="NAPOLCOM Requirement">NAPOLCOM Requirement</option>
+                                        <option value="PNP Requirement">PNP Requirement</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>Cedula Number:</label>
-                                    <input type="text">
+                                    <input type="text" id="cedula-number">
                                 </div>
                                 <div>
                                     <label>Place Issued:</label>
-                                    <input type="text" name="" id="">
+                                    <input type="text" id="place-issued">
                                 </div>
                                 <div>
                                     <label>Date Issued:</label>
-                                    <input type="text" class="third-width">
+                                    <input type="text" id="date-issued">
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>TIN Number:</label>
-                                    <input type="text">  
+                                    <input type="text" id="tin-number">  
                                 </div>
                                 <div>
                                     <label>OR Number:</label>
-                                    <input type="text" name="" id="">
+                                    <input type="text" id="or-number">
                                 </div>
                                 <div>
                                     <label>Contact Number:</label>
-                                    <input type="text" id="contact-number" class="third-width required">
+                                    <input type="text" id="contact-number">
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>Findings:</label>
-                                    <input type="text" style="width: 438px;">
+                                    <input type="text" id="findings" style="width: 438px;">
                                 </div>
                                 <div>
                                     <button style="width: 210px; background: #0075FF;">PRINT OTHER CASE</button>
@@ -171,20 +178,20 @@
                     <div>
                         <button id="createRecordBtn" style="background: #0075FF;">SAVE</button>
                         <button id="saveAndPrint" style="background: #716FE7;">SAVE AND PRINT</button>
-                        <button type="button" onclick="closeModal('addModal')" style="background: #716FE7;">CANCEL</button>
+                        <button type="button" onclick="closeModal('addModal', 'modalOverlay')" style="background: #716FE7;">CANCEL</button>
                     </div> 
                 </div>
             </div>
             <div id="manageModal">
-                <input id="manage-id" hidden>
+                <input id="manage-id">
                 <div class="modal">
                     <div>
                         <div>
                             <div>
-                                <div><label>Resident Certificate No.</label><input type="text" class="third-width"></div>
-                                <div><label>Document Date</label> <input type="text" class="third-width"></div>
-                                <div><label>OR Date</label> <input type="text" class="third-width"></div>
-                                <div><label>Document Number</label> <input type="text" class="third-width"></div>
+                                <div><label>Barangay Clearance No.</label><input type="text" id="manage-barangay-clearance-number"></div>
+                                <div><label>Document Date</label> <input type="text" id="manage-document-date"></div>
+                                <div><label>OR Date</label> <input type="text" id="manage-or-date"></div>
+                                <div><label>Document Number</label> <input type="text" id="manage-document-number"></div>
                             </div>
                             <div>
                                 <div>
@@ -206,8 +213,9 @@
                                     <div>
                                         <label>Face 3:</label>
                                         <div>
-                                            <div class="image-box face"></div>
-                                            <button class="biometrics-face-btn">SUBMIT</button>
+                                            <input id="manage-face-file-name">
+                                            <div class="image-box face"><canvas id="canvas"></canvas></div>
+                                            <button onclick="openPhotoModal()" class="biometrics-face-btn">SUBMIT</button>
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +224,7 @@
                         </div>
                         <div>
                             <div>
-                                <input type="text" class="full-name" >
+                                <input type="text" class="full-name">
                             </div>
                             <div>
                                 <div>
@@ -255,56 +263,63 @@
                             <div>
                                 <div>
                                     <label>Civil Status:</label>
-                                    <select name="" id=""></select>
+                                    <select id="manage-civil-status">
+                                        <option value="single">Single</option>
+                                        <option value="married">Married</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label>Gender:</label>
-                                    <select id="manage-gender"></select>
+                                    <select id="manage-gender">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label>Purpose</label>
                                     <select id="manage-purpose">
-                                        <option value="Local Employment">Apple</option>
-                                        <option value="Travel Abroad">Banana</option>
-                                        <option value="L.T.O Requirement">Cherry</option>
-                                        <option value="Change of Name">Cherry</option>
-                                        <option value="NAPOLCOM Requirement">Cherry</option>
-                                        <option value="PNP Requirement">Cherry</option>
+                                        <option value="Local Employment">Local Employmen</option>
+                                        <option value="Travel Abroad">Travel Abroad</option>
+                                        <option value="L.T.O Requirement">L.T.O Requirement</option>
+                                        <option value="Change of Name">Change of Name</option>
+                                        <option value="NAPOLCOM Requirement">NAPOLCOM Requirement</option>
+                                        <option value="PNP Requirement">PNP Requirement</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>Cedula Number:</label>
-                                    <input type="text">
+                                    <input type="text" id="manage-cedula-number">
                                 </div>
                                 <div>
                                     <label>Place Issued:</label>
-                                    <input type="text" name="" id="">
+                                    <input type="text" id="manage-place-issued">
                                 </div>
                                 <div>
                                     <label>Date Issued:</label>
-                                    <input type="text" class="third-width">
+                                    <input type="text" id="manage-date-issued">
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>TIN Number:</label>
-                                    <input type="text">  
+                                    <input type="text" id="manage-tin-number">  
                                 </div>
                                 <div>
                                     <label>OR Number:</label>
-                                    <input type="text" name="" id="">
+                                    <input type="text" id="manage-or-number">
                                 </div>
                                 <div>
                                     <label>Contact Number:</label>
-                                    <input type="text" id="manage-contact-number" class="third-width required">
+                                    <input type="text" id="manage-contact-number">
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <label>Findings:</label>
-                                    <input type="text" style="width: 438px;">
+                                    <input type="text" id="manage-findings" style="width: 438px;">
                                 </div>
                                 <div>
                                     <button style="width: 210px; background: #0075FF;">PRINT OTHER CASE</button>
@@ -316,9 +331,32 @@
                         <button id="updateRecordBtn" style="background: #0075FF;">UPDATE</button>
                         <button style="background: #716FE7;">PRINT</button>
                         <button style="background: #F9413A;">DELETE</button>
-                        <button onclick="closeModal('manageModal')" style="background: #716FE7;">CANCEL</button>
+                        <button onclick="closeModal('manageModal', 'modalOverlay')" style="background: #716FE7;">CANCEL</button>
                     </div> 
                 </div>
+            </div>
+            <div id="photoModalOverlay"></div>
+            <div id="photo-modal">
+                <div>
+                    <div>
+                        Face Capture
+                        <hr>
+                    </div>
+                    <div>
+                        <div>
+                            <video id="video" autoplay></video>
+                        </div>
+                        <div>
+                            <div>
+                                <button id="capture">Capture</button>
+                                <button id="retry" style="display: none;">Retry</button>
+                            </div>
+                            <div>
+                                <button id="save" onclick="closeModal('photo-modal', 'photoModalOverlay')" disabled>Save Image</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
             </div>
         </div>
     </div>

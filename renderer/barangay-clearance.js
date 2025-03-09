@@ -1,11 +1,22 @@
 const { ipcRenderer } = require("electron");
+const path = require('node:path');
 
 const addRecordBtn = document.getElementById("addRecordBtn");
 const saveAndPrintBtn = document.getElementById("saveAndPrint");
-const modalOverlay = document.getElementById("modalOverlay");
 const addModal = document.getElementById("addModal");
+const canvas = document.getElementById('canvas');
+const addCanvas = document.getElementById('add-canvas');
+const video = document.getElementById('video');
+const captureButton = document.getElementById('capture');
+const saveButton = document.getElementById('save');
+const retryButton = document.getElementById('retry');
+const ctx = canvas.getContext('2d');
+const addCtx = addCanvas.getContext('2d');
+const addPhotoFileName = document.getElementById("face-file-name");
+const photoFileName = document.getElementById("manage-face-file-name");
+let isPhotoFileNameChanged = false;
 
-const form = document.getElementById("createRecordForm");
+let stream;
 
 function loadClearanceData() {
     ipcRenderer.send("fetch-clearance-data");
@@ -27,7 +38,7 @@ ipcRenderer.on("clearance-data", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="editRecord('update', ${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
+                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
@@ -48,7 +59,7 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
             <td>${record.purpose}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
+                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
             </td>
@@ -56,6 +67,32 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
         tbody.appendChild(row);
     });
 });
+
+function displayFace(imageSrc, canvas, ctx) {
+    canvas.style.display = "block";
+    const img = new Image();
+    img.src = "../views/faces/" + imageSrc; // Make sure the image path is correct
+    // Wait for the image to load before drawing
+    img.onload = function () {
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const canvasRatio = canvas.width / canvas.height;
+
+        let drawWidth, drawHeight;
+
+        if (canvasRatio > imgRatio) {
+            drawHeight = canvas.height;
+            drawWidth = drawHeight * imgRatio;
+        } else {
+            drawWidth = canvas.width;
+            drawHeight = drawWidth / imgRatio;
+        }
+
+        const xOffset = (canvas.width - drawWidth) / 2;
+        const yOffset = (canvas.height - drawHeight) / 2;
+
+        ctx.drawImage(img, xOffset, yOffset, drawWidth, drawHeight);
+    };
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.send("fetch-clearance-data");
@@ -72,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${record.purpose}</td>
                 <td>${record.dateIssued}</td>
                 <td>
-                <button onclick="manageRecord(${record.id}, '${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}', '${record.contactNumber}')">Manage</button>
+                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
                 <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
                 <button onclick="deleteRecord(${record.id})">Delete</button>
                 </td>
@@ -88,49 +125,67 @@ function searchClearance() {
     ipcRenderer.send("search-clearance-data", query);
 }
 
-function assignInputValue(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber) {
-    const values = {
-        "manage-id": id,
-        "manage-last-name": lastName,
-        "manage-first-name": firstName,
-        "manage-middle-name": middleName,
-        "manage-civil-status": civilStatus,
-        "manage-birthdate": birthdate,
-        "manage-birthplace": birthplace,
-        "manage-address": address,
-        "manage-findings": findings,
-        "manage-purpose": purpose,
-        "manage-contact-number": contactNumber
+function assignInputValue(record) {
+    const fieldMapping = {
+        "manage-id": record.id,
+        "manage-barangay-clearance-number": record.barangayClearanceNumber,
+        "manage-document-date": record.documentDate,
+        "manage-or-date": record.orDate,
+        "manage-document-number": record.documentNumber,
+        "manage-or-number": record.orNumber,
+        "manage-last-name": record.lastName,
+        "manage-first-name": record.firstName,
+        "manage-middle-name": record.middleName,
+        "manage-address": record.address,
+        "manage-birthdate": record.birthdate,
+        "manage-birthplace": record.birthplace,
+        "manage-civil-status": record.civilStatus,
+        "manage-gender": record.gender,
+        "manage-contact-number": record.contactNumber,
+        "manage-purpose": record.purpose,
+        "manage-findings": record.findings,
+        "manage-cedula-number": record.cedulaNumber,
+        "manage-place-issued": record.placeIssued,
+        "manage-date-issued": record.dateIssued,
+        "manage-tin-number": record.tinNumber,
+        "manage-face-file-name": record.faceFileName
     };
 
-    Object.keys(values).forEach(field => {
+    Object.keys(fieldMapping).forEach(field => {
         const element = document.getElementById(field);
         if (element) {
-            element.value = values[field];
+            element.value = fieldMapping[field] || ""; // Assign value or empty string if undefined
         }
     });
 }
 
 function removeInputValue() {
     const fields = [
-        "id", "last-name", "first-name", "middle-name",
-        "civil-status", "birthdate", "birthplace", 
-        "address", "findings", "purpose", "contact-number"
+        "id", "barangay-clearance-number", "document-date", 
+        "or-date", "document-number", "face-file-name", 
+        "last-name", "first-name", "middle-name", "address", 
+        "birthdate", "birthplace", "civil-status", "gender",
+        "purpose", "cedula-number", "place-issued", "date-issued", 
+        "tin-number", "or-number", "contact-number", "findings"
     ];
     
     fields.forEach(field => {
         const element = document.getElementById(field);
         if (element) {
-            element.value = "";
-        }
+            element.value = "";        }
     });
+    addCtx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function removeManageInputValue() {
     const fields = [
-        "manage-id", "manage-last-name", "manage-first-name", "manage-middle-name",
-        "manage-civil-status", "manage-birthdate", "manage-birthplace", 
-        "manage-address", "manage-findings", "manage-purpose", "manage-contact-number"
+        "manage-id", "manage-barangay-clearance-number", "manage-document-date", 
+        "manage-or-date", "manage-document-number", "manage-face-file-name", 
+        "manage-last-name", "manage-first-name", "manage-middle-name", "manage-address", 
+        "manage-birthdate", "manage-birthplace", "manage-civil-status", "manage-gender",
+        "manage-purpose", "manage-cedula-number", "manage-place-issued", "manage-date-issued", 
+        "manage-tin-number", "manage-or-number", "manage-contact-number", "manage-findings"
+
     ];
     
     fields.forEach(field => {
@@ -139,32 +194,58 @@ function removeManageInputValue() {
             element.value = "";
         }
     });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-    modalOverlay.style.display = "none";
-    id === "addModal" ? removeInputValue() : removeManageInputValue();
+function closeModal(modal, overlay) {
+    document.getElementById(modal).style.display = "none";
+    document.getElementById(overlay).style.display = "none";
+    if (modal === "addModal") {
+        removeInputValue();
+    }else if (modal === "manageModal") {
+        removeManageInputValue();
+    }
 }
 
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-    modalOverlay.style.display = "block";
+function openModal(modal, overlay) {
+    document.getElementById(modal).style.display = "block";
+    document.getElementById(overlay).style.display = "flex";
 }
 
-function manageRecord(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber){
-    assignInputValue(id, firstName, middleName, lastName, civilStatus, birthdate, birthplace, address, findings, purpose, contactNumber)
+function openPhotoModal() {
+    openModal("photo-modal", "photoModalOverlay");
+    canvas.style.display = "none";
+    addCanvas.style.display = "none";
+    video.play();
+    saveButton.disabled = true;
+    retryButton.style.display = 'none';
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(mediaStream => {
+            stream = mediaStream;
+            video.srcObject = mediaStream;
+        })
+        .catch(error => {
+            console.error('Error accessing webcam:', error);
+        });
+}
+
+function manageRecord(button){
+    const record = JSON.parse(button.getAttribute("data-record"));
+    assignInputValue(record);
+    displayFace(record.faceFileName, canvas, ctx);
     setTimeout(() => {
-        openModal("manageModal");
+        openModal("manageModal", "modalOverlay");
     }, 50);
 }
 
 function getFormData(prefix) {
     const fields = [
-        "id", "last-name", "first-name", "middle-name",
-        "address", "birthdate", "birthplace",
-        "purpose", "findings", "civil-status",
-        "contact-number", "gender"
+        "id", "barangay-clearance-number", "document-date", 
+        "or-date", "document-number", "face-file-name", 
+        "last-name", "first-name", "middle-name", "address", 
+        "birthdate", "birthplace", "civil-status", "gender",
+        "purpose", "cedula-number", "place-issued", "date-issued", 
+        "tin-number", "or-number", "contact-number", "findings"
     ];
     
     const data = {};
@@ -180,14 +261,51 @@ function getFormData(prefix) {
 
 document.getElementById("updateRecordBtn").addEventListener("click", (e) => {
     e.preventDefault();
-    ipcRenderer.send("update-clearance", getFormData("manage-"));
-    closeModal("manageModal");
+    if (isPhotoFileNameChanged){
+        const saveDirectory = path.join(__dirname, "faces");
+        const imageData = canvas.toDataURL('image/png');
+        const matches = imageData.match(/^data:image\/(\w+);base64,/);
+        if (!matches) {
+            throw new Error("Invalid image data format.");
+        }
+        const extension = matches[1];
+        const fileName = `captured_image_${Date.now()}.${extension}`;
+        const filePath = path.join(saveDirectory, fileName);
+        photoFileName.value = fileName;
+        ipcRenderer.send("save-image", { imageData, filePath });
+        ipcRenderer.send("update-clearance", getFormData("manage-"));
+    } else {
+        ipcRenderer.send("update-clearance", getFormData("manage-"));
+    }
+    closeModal("manageModal", "modalOverlay");
 });
 
 document.getElementById("createRecordBtn").addEventListener("click", (e) => {
     e.preventDefault();
-    ipcRenderer.send("add-barangay-clearance", getFormData(""));
-    closeModal("addModal");
+    if (isPhotoFileNameChanged){
+        const saveDirectory = path.join(__dirname, "faces");
+        const imageData = addCanvas.toDataURL('image/png');
+        const matches = imageData.match(/^data:image\/(\w+);base64,/);
+        if (!matches) {
+            throw new Error("Invalid image data format.");
+        }
+        const extension = matches[1];
+        const fileName = `captured_image_${Date.now()}.${extension}`;
+        const filePath = path.join(saveDirectory, fileName);
+        addPhotoFileName.value = fileName;
+        ipcRenderer.send("save-image", { imageData, filePath });
+        ipcRenderer.send("add-barangay-clearance", getFormData(""));
+    } else {
+        ipcRenderer.send("add-barangay-clearance", getFormData(""));
+    }
+    
+    closeModal("addModal", "modalOverlay");
+});
+
+addRecordBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    displayFace("placeholder.jpg", addCanvas, addCtx);
+    openModal("addModal", "modalOverlay");
 });
 
 
@@ -218,7 +336,6 @@ saveAndPrintBtn.addEventListener("click", () => {
 ipcRenderer.on("barangay-clearance-added", () => {
     addModal.style.display = "none";
     modalOverlay.style.display = "none";
-    document.getElementById("createRecordForm").reset();
     loadClearanceData();
 });
 
@@ -295,3 +412,43 @@ function printBarangayCertificate(firstName, middleName, lastName, civilStatus, 
     docWindow.document.write(`${certificateContent}`);
     docWindow.document.close();
 }
+
+function capture(canvas, ctx){
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    video.pause();
+    saveButton.disabled = false;
+    retryButton.style.display = 'inline-block';
+}
+
+function saveFace(canvas) {
+    canvas.style.display = "block";
+    stream.getTracks().forEach(track => track.stop());
+    video.srcObject = null;
+}
+
+captureButton.addEventListener('click', () => {
+    addModal.style.display === "block" ? capture(addCanvas, addCtx) : capture(canvas, ctx);
+});
+
+retryButton.addEventListener('click', () => {
+    video.play();
+    saveButton.disabled = true;
+    retryButton.style.display = 'none';
+});
+
+saveButton.addEventListener('click', () => {
+    addModal.style.display === "block" ? saveFace(addCanvas) : saveFace(canvas); 
+    isPhotoFileNameChanged = true;
+});
+
+ipcRenderer.on("save-image-response", (event, response) => {
+    if (response.success) {
+        console.log("Image saved at:", response.filePath);
+        alert(response.filePath);
+    } else {
+        console.error(response.error);
+        alert("Failed to save image.");
+    }
+});
