@@ -34,13 +34,17 @@ ipcRenderer.on("clearance-data", (event, data) => {
         row.innerHTML = `
             <td>${record.id}</td>
             <td>${record.lastName}</td>
-            <td>${record.address}</td>
+            <td>${record.birthdate}</td>
+            <td>${record.birthplace}</td>
+            <td>${record.gender}</td>
             <td>${record.purpose}</td>
+            <td>${record.contactNumber}</td>
+            <td>${record.findings}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
-                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button class="blue" data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
+                <button class="purple" onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button class="red" onclick="deleteRecord(${record.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -55,13 +59,17 @@ ipcRenderer.on("search-clearance-results", (event, data) => {
         row.innerHTML = `
             <td>${record.id}</td>
             <td>${record.lastName}</td>
-            <td>${record.address}</td>
+            <td>${record.birthdate}</td>
+            <td>${record.birthplace}</td>
+            <td>${record.gender}</td>
             <td>${record.purpose}</td>
+            <td>${record.contactNumber}</td>
+            <td>${record.findings}</td>
             <td>${record.dateIssued}</td>
             <td>
-                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
-                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button class="blue" data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
+                <button class="purple" onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button class="red" onclick="deleteRecord(${record.id})">Delete</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -105,13 +113,17 @@ document.addEventListener("DOMContentLoaded", () => {
             tr.innerHTML = `
                 <td>${record.id}</td>
                 <td>${record.lastName}</td>
-                <td>${record.address}</td>
+                <td>${record.birthdate}</td>
+                <td>${record.birthplace}</td>
+                <td>${record.gender}</td>
                 <td>${record.purpose}</td>
+                <td>${record.contactNumber}</td>
+                <td>${record.findings}</td>
                 <td>${record.dateIssued}</td>
                 <td>
-                <button data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
-                <button onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
-                <button onclick="deleteRecord(${record.id})">Delete</button>
+                <button class="blue" data-record='${JSON.stringify(record)}' onclick="manageRecord(this)">Manage</button>
+                <button class="purple" onclick="printBarangayCertificate('${record.firstName}', '${record.middleName}', '${record.lastName}', '${record.civilStatus}', '${record.birthdate}', '${record.birthplace}', '${record.address}', '${record.findings}', '${record.purpose}')">Print</button>
+                <button class="red" onclick="deleteRecord(${record.id})">Delete</button>
                 </td>
             `;
             tableBody.appendChild(tr);
@@ -452,3 +464,43 @@ ipcRenderer.on("save-image-response", (event, response) => {
         alert("Failed to save image.");
     }
 });
+
+const lastName = document.getElementById("last-name");
+const firstName = document.getElementById("first-name");
+const middleName = document.getElementById("middle-name");
+const fullName = document.getElementById("full-name");
+
+function updateFullName() {
+    let middle = middleName.value.trim();
+    fullName.value = (lastName.value + " " + firstName.value + (middle ? ", " + middle : "")).toUpperCase();
+}
+
+// Add event listeners to update full name when any field changes
+[lastName, firstName, middleName].forEach(input => {
+    input.addEventListener("input", updateFullName);
+});
+
+const birthdate = document.getElementById("birthdate");
+const ageInput = document.getElementById("age");
+
+function calculateAge() {
+    let birthDateValue = birthdate.value;
+    if (!birthDateValue) return; // Stop if birthdate is empty
+
+    let birthDate = new Date(birthDateValue);
+    let today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let monthDiff = today.getMonth() - birthDate.getMonth();
+    let dayDiff = today.getDate() - birthDate.getDate();
+
+    // Adjust age if birthday hasn't happened yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+        age--;
+    }
+
+    ageInput.value = age; // Update the age input field
+}
+
+// Calculate age when birthdate input loses focus
+birthdate.addEventListener("blur", calculateAge);

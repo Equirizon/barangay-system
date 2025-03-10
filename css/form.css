@@ -56,26 +56,88 @@
     padding: 20px;
 }
 
+.red {
+    background: #F9413A;
+}
+
+.blue {
+    background: #0075FF;  
+}
+
+.purple {
+    background: #716FE7;
+}
+
 .table-container {
-    width: 100%;
     margin-top: 20px;
     background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
     padding: 50px;
     border-radius: 12px;
     height: 400px;
 }
+
+.table-container div {
+    display: flex;
+}
+
+.table-container ~ div {
+    width: 100%;
+}
+
+.table-container > div:first-child {
+    align-items: center;
+    height: 30px;
+    justify-content: space-between;
+    padding-bottom: 50px;
+}
+
+.table-container > div:last-child {
+    padding-top: 40px;
+    justify-content: end;
+}
+
+.table-container h2 {
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.table-container > div:first-child > div:first-child {
+    flex: 1;
+}
+
+.table-container > div:first-child > div:last-child > button{
+    height: 100%;
+}
+
+.table-container > div:first-child > div:last-child {
+    justify-content: end;
+    flex: 1;
+    gap: 10px;
+    height: 30px;
+}
+
+.table-container > div:first-child > div:last-child {
+    justify-content: end;
+    flex: 1;
+}
+
 table {
     border-collapse: collapse;
 }
 th, td {
     text-align: left;
     color: #A0AEC0;
-    font-size: 12px;
-    padding-right: 50px;
+    font-size: 11px;
+    padding-right: 40px;
 }
+
+th:last-child, td:last-child {
+    padding-right: 0;
+}
+
 th {
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     padding-bottom: 20px;
 }
@@ -111,7 +173,7 @@ body{
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-40%, -50%);
+    transform: translate(-20%, -50%);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     background-image: url('../assets/wp9649930.jpg');
@@ -137,7 +199,7 @@ body{
     z-index: 1001;
 }
 
-.modal input, .modal select{
+select,  input{
     all: unset;
     font-size: 10px;
     text-indent: 12px;
@@ -151,11 +213,36 @@ body{
     border: 2px solid rgba(255, 255, 255, 0.2); /* Creates space for the border */
 }
 
-.modal input:focus, .modal select:focus {
+input:focus, select:focus {
     border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
-.modal button{
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.select-wrapper::before {
+    content: "▾";
+    font-size: 20px;
+    position: absolute;
+    color: #ffffff;
+    pointer-events: none;
+    right: 5%;
+    top: 40%;
+    transition: transform 0.2s ease;
+}
+
+.select-wrapper:focus-within::before {
+    content: "▴";
+}
+
+select {
+    display: flex;
+    align-items: center;
+}
+
+button{
     font-size: 8px;
     font-weight: 500;
     color: #ffffff;
@@ -266,6 +353,8 @@ body{
 .modal .full-name {
     width: 668px;
     height: 50px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .modal > div:first-child > div:last-child > div {
