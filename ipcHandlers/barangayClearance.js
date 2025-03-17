@@ -79,7 +79,7 @@ ipcMain.on("search-clearance-data", (event, query) => {
 	});
 });
 
-ipcMain.on("update-clearance", (event, updatedData) => {
+ipcMain.on("update-barangay-clearance", (event, updatedData) => {
     const sql = `
         UPDATE barangay_clearance 
         SET 

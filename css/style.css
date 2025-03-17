@@ -1,59 +1,78 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't affect element size */
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Consistent typography */
+    user-select: none; 
+}
+
 .main-container {
     display: flex;
     height: 100vh; /* Full height of the screen */
 }
 
 #sidebar-container{
-    width: 174px;
+    position: fixed;
+    background: white;
+    color: white;
+    width: 100%;
+    padding: 5px 10px;
+    
 }
 #sidebar {
-     /* 1/6 of the screen */
-    height: 100vh;
-    position: fixed;
-    background: linear-gradient(111.84deg, rgba(6, 11, 38, 0.94) 59.3%, rgba(26, 31, 55, 0) 100%);
-    color: white;
-    padding: 20px;
-    width: 174px;
-    border-radius: 12px;
-    margin: 10px;
+    
 }
 
-#sidebar h2{
-    font-size: 11px;
-    color: linear-gradient(97.89deg, #FFFFFF 70.67%, rgba(117, 122, 140, 0) 108.55%);
-    font-weight: 200;
-    letter-spacing: 2px;
-    text-align: center;
-    padding-bottom: 12px;
-}
-
-#sidebar hr{
-    border: 1px solid;
-    border-image-source: linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);
-    border-image-slice: 1;
-
-}
-
-#sidebar ul {
+#sidebar > ul {
+    display: flex;
     list-style: none;
     padding: 0;
+    gap: 15px;
 }
 
 #sidebar ul li {
-    margin: 15px 0;
+
 }
 
-#sidebar ul li a {
-    color: white;
+#sidebar > ul li a {
+    color: black;
     text-decoration: none;
+    font-size: 12px;
 }
+
+.submenu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 100%;
+    border-radius: 5px;
+    flex-direction: column;
+    padding: 10px 25px 10px 10px;
+    list-style: none;
+    gap: 5px;
+}
+
+.submenu li {
+    
+}
+
+.submenu li a {
+   
+}
+
+.submenu li a:hover {
+    background-color: #5aaf5e;
+}
+
 
 .content {
-    margin-left: 50px;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .red {
@@ -69,11 +88,11 @@
 }
 
 .table-container {
-    margin-top: 20px;
+    margin-top: 60px;
     background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
     padding: 50px;
     border-radius: 12px;
-    height: 400px;
+    height: 500px;
 }
 
 .table-container div {
@@ -162,20 +181,19 @@ th {
 }
 
 body{
-    box-sizing: border-box;
-    font-family: "Plus Jakarta Sans", sans-serif;
     background-image: url('../assets/wp9649930.jpg');
     background-repeat: no-repeat;
 }
 
-#addModal, #manageModal, #photo-modal {
+#modal, #photo-modal {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-20%, -50%);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
     z-index: 1000;
+    border-radius: 20px;
+    width: 750px;
     background-image: url('../assets/wp9649930.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -259,7 +277,6 @@ button{
     padding: 30px 40px;
     gap: 20px;
     border-radius: 20px;
-    width: 670px;
 }
 
 .modal div {
@@ -375,7 +392,7 @@ button{
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-40%, -50%);
+    transform: translate(-50%, -50%);
     z-index: 1002;
 }
 

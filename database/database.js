@@ -74,7 +74,7 @@ db.run(
           ) VALUES (
             'BCN-2025001', '2025-03-09', '2025-03-09', 'DOC-001', 'OR-001',
             'Dela Cruz', 'Juan', 'Santos', '123 Main St', '2000-01-01', 'Manila', 'Single', 'Male', '09091234567',
-            'Employment', 'No record',
+            'Local Employment', 'No record',
             'CED-2025', 'Manila', DATE('now'), 'TIN-123456789',
             'juan-dela-cruz.jpg', DATETIME('now')
           )` ,
