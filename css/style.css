@@ -83,13 +83,17 @@
     background: #0075FF;  
 }
 
+.yellow {
+    background: #FB991C;
+}
+
 .purple {
     background: #716FE7;
 }
 
 .table-container {
     margin-top: 60px;
-    background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
+    background: #022539;
     padding: 50px;
     border-radius: 12px;
     height: 500px;
@@ -181,8 +185,7 @@ th {
 }
 
 body{
-    background-image: url('../assets/wp9649930.jpg');
-    background-repeat: no-repeat;
+    background: #D9D9D9;
 }
 
 #modal, #photo-modal {
@@ -194,9 +197,7 @@ body{
     z-index: 1000;
     border-radius: 20px;
     width: 750px;
-    background-image: url('../assets/wp9649930.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: #022539;
 }
 
 #photoModalOverlay, #modalOverlay {
@@ -268,12 +269,12 @@ button{
     border-radius: 7px;
     border: none;
     backdrop-filter: blur(120px);
+    padding: 10px;
 }
 
 .modal {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(138.78deg, rgba(6, 11, 40, 0.94) 17.44%, rgba(10, 14, 35, 0.49) 93.55%, rgba(10, 14, 35, 0.69) 93.55%);
     padding: 30px 40px;
     gap: 20px;
     border-radius: 20px;
@@ -354,13 +355,11 @@ button{
 
 .modal .biometrics-finger-btn{
     width: 93px;
-    background: #0075FF38;
 }
 
 .modal .biometrics-face-btn{
     width: 27px;
     width: 93px;
-    background: #0075FF;
 }
 
 .modal > div:first-child > div:last-child > div:nth-child(5) > div {

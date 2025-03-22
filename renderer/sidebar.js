@@ -3,13 +3,14 @@ function createSidebar() {
         <div id="sidebar">
             <ul>
                 <li class="has-submenu">
-                    <a href="#">Services</a>
+                    <a href="#">Main</a>
                     <ul class="submenu">
                         <li><a href="barangay-clearance.html">Barangay Clearance</a></li>
                         <li><a href="warrant-booking.html">Warrant Booking</a></li>
                     </ul>
                 </li>
-                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="index.html">Tools</a></li>
+                <li><a href="index.html">Settings</a></li>
             </ul>
         </div>
     `;
