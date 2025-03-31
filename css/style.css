@@ -1,0 +1,474 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding doesn't affect element size */
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Consistent typography */
+    user-select: none; 
+}
+
+.main-container {
+    display: flex;
+    height: 100vh; /* Full height of the screen */
+}
+
+#sidebar-container{
+    position: fixed;
+    background: white;
+    color: white;
+    width: 100%;
+    padding: 5px 10px;
+    
+}
+#sidebar {
+    
+}
+
+#sidebar > ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 15px;
+}
+
+#sidebar ul li {
+
+}
+
+#sidebar > ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 100%;
+    border-radius: 5px;
+    flex-direction: column;
+    padding: 10px 25px 10px 10px;
+    list-style: none;
+    gap: 5px;
+}
+
+.submenu li {
+    
+}
+
+.submenu li a {
+   
+}
+
+.submenu li a:hover {
+    background-color: #5aaf5e;
+}
+
+
+.content {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.red {
+    background: #F9413A;
+}
+
+.blue {
+    background: #0075FF;  
+}
+
+.yellow {
+    background: #FB991C;
+}
+
+.purple {
+    background: #716FE7;
+}
+
+.table-container {
+    margin-top: 60px;
+    background: #022539;
+    padding: 50px;
+    border-radius: 12px;
+    height: 500px;
+}
+
+.table-container div {
+    display: flex;
+}
+
+.table-container ~ div {
+    width: 100%;
+}
+
+.table-container > div:first-child {
+    align-items: center;
+    height: 30px;
+    justify-content: space-between;
+    padding-bottom: 50px;
+}
+
+.table-container > div:last-child {
+    padding-top: 40px;
+    justify-content: end;
+}
+
+.table-container h2 {
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.table-container > div:first-child > div:first-child {
+    flex: 1;
+}
+
+.table-container > div:first-child > div:last-child > button{
+    height: 100%;
+}
+
+.table-container > div:first-child > div:last-child {
+    justify-content: end;
+    flex: 1;
+    gap: 10px;
+    height: 30px;
+}
+
+.table-container > div:first-child > div:last-child {
+    justify-content: end;
+    flex: 1;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    color: #A0AEC0;
+    font-size: 11px;
+    padding-right: 40px;
+}
+
+th:last-child, td:last-child {
+    padding-right: 0;
+}
+
+th {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+.modal label{
+    font-weight: 200;
+    font-size: 10px;
+    color: #ffffff;
+    text-indent: 5px;
+}
+
+.modal .image-box{
+    width: 95px;
+    height: 111px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    background: linear-gradient(123.64deg, rgba(255, 255, 255, 0) -22.38%, rgba(255, 255, 255, 0.039) 70.38%);
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Creates space for the border */
+}
+
+body{
+    background: #D9D9D9;
+}
+
+#modal, #photo-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border-radius: 20px;
+    width: 750px;
+    background: #022539;
+}
+
+#photoModalOverlay, #modalOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    align-items: center;
+    justify-content: center;
+}
+#modalOverlay{
+    z-index: 999;
+}
+#photoModalOverlay{
+    z-index: 1001;
+}
+
+select,  input{
+    all: unset;
+    font-size: 10px;
+    text-indent: 12px;
+    color: #ffffff;
+    background: linear-gradient(123.64deg, rgba(255, 255, 255, 0) -22.38%, rgba(255, 255, 255, 0.039) 70.38%);
+    border: 2px solid;
+    border-radius: 12px;
+    border-color: #ffffff;
+    height: 30px;
+    width: 210px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Creates space for the border */
+}
+
+input:focus, select:focus {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.select-wrapper::before {
+    content: "▾";
+    font-size: 20px;
+    position: absolute;
+    color: #ffffff;
+    pointer-events: none;
+    right: 5%;
+    top: 40%;
+    transition: transform 0.2s ease;
+}
+
+.select-wrapper:focus-within::before {
+    content: "▴";
+}
+
+select {
+    display: flex;
+    align-items: center;
+}
+
+button{
+    font-size: 8px;
+    font-weight: 500;
+    color: #ffffff;
+    height: 27px;
+    border-radius: 7px;
+    border: none;
+    backdrop-filter: blur(120px);
+    padding: 10px;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    gap: 20px;
+    border-radius: 20px;
+}
+
+.modal div {
+    display: flex;
+}
+
+.modal > div {
+    gap: 10px;
+    flex-direction: column;
+}
+
+.modal > div:first-child > div {
+    gap: 7px;
+    flex-direction: column;
+}
+
+.modal > div:first-child > div:first-child {
+    gap: 40px;
+}
+
+.modal > div:first-child div:first-child div:first-child input {
+    width: 210px;
+}
+
+.modal > div:last-child {
+    flex-direction: row;
+    justify-content: end;
+}
+
+.modal > div:last-child button {
+    width: 122px;
+}
+
+.modal > div:first-child > div:first-child{
+    flex-direction: row;
+}
+.modal > div:first-child > div:first-child > div {
+    flex-direction: column;
+}
+
+.modal > div:first-child > div:first-child > div:first-child div {
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 10px;
+}
+
+
+.modal > div:first-child > div:first-child > div:last-child > div:first-child {
+    gap: 13px;
+    text-indent: 5px;
+}
+
+.modal > div:first-child > div:first-child > div:last-child > div:first-child div{
+    flex-direction: column;
+    gap: 3px;
+}
+.modal > div:first-child > div:first-child > div:last-child > div:first-child div div{
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    
+}
+
+.modal .face{
+    width: 149px;
+    height: 153px;
+}
+
+.modal #canvas, .modal #add-canvas{
+    width: 149px;
+    height: 153px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.modal .biometrics-finger-btn{
+    width: 93px;
+}
+
+.modal .biometrics-face-btn{
+    width: 27px;
+    width: 93px;
+}
+
+.modal > div:first-child > div:last-child > div:nth-child(5) > div {
+    flex-direction: column;
+}
+
+.modal .full-name {
+    width: 668px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal > div:first-child > div:last-child > div {
+    gap: 16px;
+}
+
+.modal > div:first-child > div:last-child > div div {
+    flex-direction: column;
+    gap: 3px;
+    justify-content: end;                        
+}
+
+#photo-modal {
+    background-image: url('../assets/wp9649930.jpg');
+    width: 397px;
+    border-radius: 20px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+}
+
+#photo-modal div {
+    display: flex;
+}
+
+#photo-modal > div{
+    background-repeat: no-repeat;
+    background: linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(10, 14, 35, 0.49) 76.65%);
+    flex-direction: column;
+    padding: 40px;
+    border-radius: 20px;
+}
+#photo-modal > div > div:first-child {
+    font-size: 18px;
+    color: #FFFFFF;
+    flex-direction: column;
+}
+
+#photo-modal > div > div:last-child > div:last-child {
+    flex-direction: column;
+}
+
+#photo-modal > div > div:last-child{
+    height: 170px;
+    gap: 40px;
+    padding-top: 20px;
+}
+
+#photo-modal > div > div:last-child > div:last-child{
+    height: 100%;
+    
+}
+
+#photo-modal > div > div:last-child > div:last-child > div:last-child{
+    height: 100%;
+    align-items: end;
+}
+
+#photo-modal > div > div:last-child > div:last-child button{
+    font-size: 8px;
+    font-weight: 500;
+    color: #ffffff;
+    height: 27px;
+    border-radius: 7px;
+    border: none;
+    backdrop-filter: blur(120px);
+    background: #716FE7;
+    width: 122px;
+    height: 27px;
+}
+
+#photo-modal > div > div:first-child hr {
+    border: 1px solid;
+    border-image-source: linear-gradient(90deg, rgba(224, 225, 226, 0) 0%, #E0E1E2 49.52%, rgba(224, 225, 226, 0.15625) 99.04%);
+    border-image-slice: 1;
+    width: 100%;
+}
+
+#photo-modal video {
+    height: 170px;
+    width: 160px;
+    background: linear-gradient(123.64deg, rgba(255, 255, 255, 0) -22.38%, rgba(255, 255, 255, 0.039) 70.38%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+#photo-modal > div > div:last-child > div:last-child div:first-child{
+    flex-direction: column;
+    gap: 10px;
+}
+
+#photo-modal > div > div:last-child > div:last-child div:last-child{
+    justify-content: end;
+}
+
+
+

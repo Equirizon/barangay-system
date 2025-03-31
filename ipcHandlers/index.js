@@ -1,0 +1,2 @@
+require("./barangayClearance");
+require("./auth");
